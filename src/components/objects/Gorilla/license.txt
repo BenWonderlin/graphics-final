@@ -1,0 +1,11 @@
+Model Information:
+* title:	Gorilla Tag Rigs
+* source:	https://sketchfab.com/3d-models/gorilla-tag-rigs-55fbba005b6c4244ba4045fc3b4fbf6e
+* author:	Exonl (https://sketchfab.com/exonlgm)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gorilla Tag Rigs" (https://sketchfab.com/3d-models/gorilla-tag-rigs-55fbba005b6c4244ba4045fc3b4fbf6e) by Exonl (https://sketchfab.com/exonlgm) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
