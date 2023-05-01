@@ -393,13 +393,13 @@
   ],
   "images": [
     {
-      "uri": "/src/components/objects/Gorilla/textures/gorilla_texture.png"
+      "uri": "/src/components/objects/Gorilla/textures/fur_texture.png"
     },
     {
-      "uri": "/src/components/objects/Gorilla/textures/material_color_1.jpeg"
+      "uri": "/src/components/objects/Gorilla/textures/skin_texture.png"
     },
     {
-      "uri": "/src/components/objects/Gorilla/textures/material_color_2.jpeg"
+      "uri": "/src/components/objects/Gorilla/textures/skin_texture.png"
     }
   ],
   "materials": [
