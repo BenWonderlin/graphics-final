@@ -90,11 +90,13 @@ main_container.appendChild(header_row);
 
 // window row
 const window_row = document.createElement("div");
+window_row.style.maxHeight = "70vh";
 
 renderer.setPixelRatio(window.devicePixelRatio);
 const canvas = renderer.domElement;
 canvas.style.display = 'block';
 canvas.style.margin = 0;
+canvas.style.maxHeight = "70vh";
 canvas.style.borderRadius = "8px";
 canvas.style.cursor = "grab";
 window_row.appendChild(canvas);
@@ -212,6 +214,7 @@ for (let i = 0; i < button_rows.length; i++){
     button_rows[i].style.width = "100%";
     button_rows[i].style.verticalAlign = "center";
     button_rows[i].style.margin = "8px 0px 8px 0px"
+    button_rows[i].style.maxHeight = "8vh";
 }
 //
 
