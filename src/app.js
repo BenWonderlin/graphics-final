@@ -123,7 +123,7 @@ health_bar_background.style.height = "3%";
 health_bar_background.style.width = "52%";
 health_bar_background.style.borderRadius = "16px";
 health_bar_background.style.left = "24%";
-health_bar_background.style.bottom = "11.75%";
+health_bar_background.style.bottom = "12.75%";
 
 window_row.appendChild(health_bar_background);
 
@@ -135,7 +135,7 @@ health_bar.style.height = "1.5%";
 health_bar.style.width = "50%"; // adjusting this updates the health bar
 health_bar.style.borderRadius = "16px";
 health_bar.style.left = "25%";
-health_bar.style.bottom = "12.5%";
+health_bar.style.bottom = "13.5%";
 
 
 window_row.appendChild(health_bar);
@@ -162,6 +162,7 @@ bathe_button.append(node);
 
 const walk_button = document.createElement("span");
 walk_button.className = "button";
+
 node = document.createTextNode("Walk");
 walk_button.append(node);
 
@@ -193,6 +194,15 @@ const mouseOutButtonHandler = (event) => {
     event.target.style.backgroundColor = "rgb(191,192,192)";
 }
 
+const mouseOnClickHandler = (event) => {
+
+    scene.doActivity(event);
+}
+
+feed_button.addEventListener("click", () => mouseOnClickHandler("feed"));
+bathe_button.addEventListener("click", () => mouseOnClickHandler("bathe"));
+walk_button.addEventListener("click", () => mouseOnClickHandler("walk"));
+
 
 
 const buttons = document.getElementsByClassName("button");
@@ -203,8 +213,8 @@ for (let i = 0; i < buttons.length; i++){
     buttons[i].style.alignItems = "center";
     buttons[i].style.padding = "0px 8px 0px 8px";
     buttons[i].style.cursor = "pointer";
-    buttons[i].addEventListener("mouseover", mouseOverButtonHandler, false);
-    buttons[i].addEventListener("mouseout", mouseOutButtonHandler, false);
+    buttons[i].addEventListener("mouseover", mouseOverButtonHandler);
+    buttons[i].addEventListener("mouseout", mouseOutButtonHandler);
 }
 
 const button_rows = document.getElementsByClassName("button-row");
@@ -224,7 +234,7 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 1;
-controls.maxDistance = 2;
+controls.maxDistance = 2.5;
 controls.update();
 //
 
@@ -233,9 +243,10 @@ controls.update();
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
-    // controls.update();
+    controls.update();
     renderer.render(scene, camera);
-    scene.update && scene.update(timeStamp);
+    let happiness = scene.update() * 0.5;
+    health_bar.style.width = happiness.toString() + "%";
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
