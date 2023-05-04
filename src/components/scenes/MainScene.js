@@ -1,35 +1,21 @@
-import * as Dat from 'dat.gui';
 import { Scene, Color } from 'three';
 import { Gorilla } from 'objects';
 import { BasicLights } from 'lights';
 
 class MainScene extends Scene {
     constructor() {
-        // Call parent Scene() constructor
-        super();
 
-        // Init state
+        super();
         this.state = {
-            //gui: new Dat.GUI(), // Create GUI for scene
-            rotationSpeed: 1,
-            updateList: [],
-            feed: false,
-            walk: false,
-            bathe: false
+            gorilla: new Gorilla(this)
         };
 
-        // Set background to a nice color
         this.background = new Color(0xCEE7E6);
-
-        // Add meshes to scene
-        const gorilla = new Gorilla(this);
+      
         const lights = new BasicLights();
-        this.add(gorilla, lights);
 
-        // Populate GUI
-        // this.state.gui.add(this.state, 'feed');
-        // this.state.gui.add(this.state, 'walk');
-        // this.state.gui.add(this.state, 'bathe');
+        this.add(this.state.gorilla, lights);
+
     }
 
     addToUpdateList(object) {
@@ -44,7 +30,15 @@ class MainScene extends Scene {
         for (const obj of updateList) {
             obj.update(timeStamp, clock);
         }
+      
+        return this.state.gorilla.update();
+
+    doActivity(activity_name) {
+        return this.state.gorilla.doActivity(activity_name);
     }
+
+
+
 }
 
 export default MainScene;
