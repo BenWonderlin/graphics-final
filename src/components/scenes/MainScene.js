@@ -26,7 +26,7 @@ class MainScene extends Scene {
         // const lights = new BasicLights();
         // this.add(gorilla, lights);
 
-        const ape = new Ape();
+        const ape = new Ape(this);
         const lights = new BasicLights();
         this.add(ape, lights);
 
@@ -40,14 +40,14 @@ class MainScene extends Scene {
         this.state.updateList.push(object);
     }
 
-    update(timeStamp) {
-        // const { rotationSpeed, updateList } = this.state;
+    update(timeStamp, clock) {
+        const { rotationSpeed, updateList } = this.state;
         // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
-        // // Call update for each object in the updateList
-        // for (const obj of updateList) {
-        //     obj.update(timeStamp);
-        // }
+        // Call update for each object in the updateList
+        for (const obj of updateList) {
+            obj.update(timeStamp, clock);
+        }
     }
 }
 
