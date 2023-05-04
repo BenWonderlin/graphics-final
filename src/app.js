@@ -9,6 +9,7 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { MainScene } from 'scenes';
+import { Clock } from 'three';
 
 const WINDOW_PROPORTION = 0.8;
 // Initialize core ThreeJS components
@@ -240,12 +241,13 @@ controls.update();
 
 // END PAGE STRUCTURE -------------------------------------------------------------------------------------------
 
+const clock = new Clock();
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
     renderer.render(scene, camera);
-    let happiness = scene.update() * 0.5;
+    let happiness = scene.update(timeStamp, clock) * 0.5;
     health_bar.style.width = happiness.toString() + "%";
     window.requestAnimationFrame(onAnimationFrameHandler);
 };

@@ -7,10 +7,11 @@ class MainScene extends Scene {
 
         super();
         this.state = {
-            gorilla: new Gorilla()
+            gorilla: new Gorilla(this)
         };
 
         this.background = new Color(0xCEE7E6);
+      
         const lights = new BasicLights();
 
         this.add(this.state.gorilla, lights);
@@ -21,11 +22,18 @@ class MainScene extends Scene {
         this.state.updateList.push(object);
     }
 
-    update() {
-        return this.state.gorilla.update();
-    }
+    update(timeStamp, clock) {
+        const { rotationSpeed, updateList } = this.state;
+        // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
-    doActivity(activity_name){
+        // Call update for each object in the updateList
+        for (const obj of updateList) {
+            obj.update(timeStamp, clock);
+        }
+      
+        return this.state.gorilla.update();
+
+    doActivity(activity_name) {
         return this.state.gorilla.doActivity(activity_name);
     }
 
