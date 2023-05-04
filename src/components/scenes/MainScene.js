@@ -7,7 +7,8 @@ class MainScene extends Scene {
 
         super();
         this.state = {
-            gorilla: new Gorilla(this)
+            gorilla: new Gorilla(this),
+            updateList: [],
         };
 
         this.background = new Color(0xCEE7E6);
@@ -18,9 +19,9 @@ class MainScene extends Scene {
 
     }
 
-    addToUpdateList(object) {
-        this.state.updateList.push(object);
-    }
+    // addToUpdateList(object) {
+    //     this.state.updateList.push(object);
+    // }
 
     update(timeStamp, clock) {
         const { rotationSpeed, updateList } = this.state;
@@ -31,7 +32,8 @@ class MainScene extends Scene {
             obj.update(timeStamp, clock);
         }
       
-        return this.state.gorilla.update();
+        return this.state.gorilla.update(timeStamp, clock);
+    }
 
     doActivity(activity_name) {
         return this.state.gorilla.doActivity(activity_name);

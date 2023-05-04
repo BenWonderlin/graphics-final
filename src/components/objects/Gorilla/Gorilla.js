@@ -10,20 +10,17 @@ class Gorilla extends Group {
 
         const loader = new GLTFLoader()
 
+        // includes needs and animation states
         this.state = {
             "hunger" : 10000,
             "cleanliness" : 10000,
             "happiness" : 10000,
-        };
-
-        // set initial states
-        this.state = {
             idle: true,
             walking: false,
             bathing: false,
             feeding: false,
             chatting: false
-        }
+        };
 
         // set initial position, scaling, and rotation
         const scale = 0.15;
@@ -54,7 +51,7 @@ class Gorilla extends Group {
             }
         );
 
-        parent.addToUpdateList(this);
+        // parent.addToUpdateList(this);
     }
 
     update(timeStamp, clock) {
@@ -71,16 +68,12 @@ class Gorilla extends Group {
             }
             this.mixer.update(delta);
         }
-    }
-
-    update() {
 
         this.state.hunger -= 3;
         this.state.cleanliness -= 3;
         this.state.happiness -= 3;
 
         return Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) / 100;
-
     }
 
     doActivity(activity_name){
