@@ -10,6 +10,10 @@ import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { MainScene } from 'scenes';
 import { Clock } from 'three';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { RenderPixelatedPass } from 'passes';
+
 
 const WINDOW_PROPORTION = 0.8;
 // Initialize core ThreeJS components
@@ -20,6 +24,19 @@ const renderer = new WebGLRenderer({ antialias: true });
 // Set up camera
 camera.position.set(0, 0.5, 2);
 camera.lookAt(new Vector3(0, 0, 0));
+
+
+// Set up post-processing
+
+const composer = new EffectComposer( renderer );
+
+const renderPass = new RenderPass(scene, camera); // uncomment these two lines for normal rendering
+composer.addPass(renderPass);
+
+const renderPixelatedPass = new RenderPixelatedPass(1, scene, camera, {normalEdgeStrength : 0.00001, depthEdgeStrength : 0.00001}); // uncomment these two lines for pixelated rendering
+composer.addPass(renderPixelatedPass);
+
+composer.render(scene, camera);
 
 // Set up clock for animation
 const clock = new Clock();
@@ -94,7 +111,8 @@ main_container.appendChild(header_row);
 
 // window row
 const window_row = document.createElement("div");
-window_row.style.maxHeight = "70vh";
+window_row.style.maxHeight = "69vh";
+window_row.style.margin = "0px 0px 24px 0px";
 
 renderer.setPixelRatio(window.devicePixelRatio);
 const canvas = renderer.domElement;
@@ -103,6 +121,7 @@ canvas.style.margin = 0;
 canvas.style.maxHeight = "70vh";
 canvas.style.borderRadius = "8px";
 canvas.style.cursor = "grab";
+canvas.style.border = "6px solid white";
 window_row.appendChild(canvas);
 
 
@@ -171,16 +190,9 @@ walk_button.className = "button";
 node = document.createTextNode("Walk");
 walk_button.append(node);
 
-const chat_button = document.createElement("span");
-chat_button.className = "button";
-node = document.createTextNode("Chat");
-chat_button.append(node);
-
-
 footer_row.appendChild(feed_button);
 footer_row.appendChild(bathe_button);
 footer_row.appendChild(walk_button);
-footer_row.appendChild(chat_button);
 
 main_container.appendChild(footer_row);
 //
@@ -248,7 +260,7 @@ controls.update();
 // Render loop
 const onAnimationFrameHandler = () => {
     controls.update();
-    renderer.render(scene, camera);
+    composer.render(scene, camera);
     let happiness = scene.update(clock) * 0.5;
     health_bar.style.width = happiness.toString() + "%";
     window.requestAnimationFrame(onAnimationFrameHandler);

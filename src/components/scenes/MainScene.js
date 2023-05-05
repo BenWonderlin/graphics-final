@@ -1,6 +1,7 @@
 import { Scene, Color } from 'three';
-import { Gorilla, Bedroom, Forest, City } from 'objects';
+import { Gorilla, Bedroom, Forest, City, Bathtub } from 'objects';
 import { BasicLights } from 'lights';
+
 
 class MainScene extends Scene {
     constructor() {
@@ -12,7 +13,8 @@ class MainScene extends Scene {
             forest: new Forest(),
             city: new City(),
             currentLocation: undefined,
-            updateList: []
+            currentActivity: undefined,
+            bathtub: new Bathtub()
         };
 
         this.background = new Color(0x000000);
@@ -25,14 +27,6 @@ class MainScene extends Scene {
 
 
     update(clock) {
-        const { rotationSpeed, updateList } = this.state;
-        // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
-
-        // Call update for each object in the updateList
-        for (const obj of updateList) {
-            obj.update(clock);
-        }
-      
         return this.state.gorilla.update(clock);
     }
 
@@ -53,6 +47,18 @@ class MainScene extends Scene {
             }
 
             this.add(this.state.currentLocation);
+
+        }
+        else if (activity_name == "bathe"){
+
+            if (this.state.currentActivity == undefined){
+                this.add(this.state.bathtub);
+                this.state.currentActivity = "bathe";
+            }
+            else {
+                this.remove(this.state.bathtub);
+                this.state.currentActivity = undefined;
+            }
 
         }
 
