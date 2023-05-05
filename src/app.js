@@ -21,6 +21,9 @@ const renderer = new WebGLRenderer({ antialias: true });
 camera.position.set(0, 0.5, 2);
 camera.lookAt(new Vector3(0, 0, 0));
 
+// Set up clock for animation
+const clock = new Clock();
+
 
 // START PAGE STRUCTURE ------------------------------------------------------------------------------------------
 // using dom model sadge
@@ -197,7 +200,7 @@ const mouseOutButtonHandler = (event) => {
 
 const mouseOnClickHandler = (event) => {
 
-    scene.doActivity(event);
+    scene.doActivity(event, clock);
 }
 
 feed_button.addEventListener("click", () => mouseOnClickHandler("feed"));
@@ -241,13 +244,11 @@ controls.update();
 
 // END PAGE STRUCTURE -------------------------------------------------------------------------------------------
 
-const clock = new Clock();
-
 // Render loop
-const onAnimationFrameHandler = (timeStamp) => {
+const onAnimationFrameHandler = () => {
     controls.update();
     renderer.render(scene, camera);
-    let happiness = scene.update(timeStamp, clock) * 0.5;
+    let happiness = scene.update(clock) * 0.5;
     health_bar.style.width = happiness.toString() + "%";
     window.requestAnimationFrame(onAnimationFrameHandler);
 };

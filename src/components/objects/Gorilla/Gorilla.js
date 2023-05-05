@@ -15,11 +15,12 @@ class Gorilla extends Group {
             "hunger" : 10000,
             "cleanliness" : 10000,
             "happiness" : 10000,
-            idle: true,
-            walking: false,
-            bathing: false,
-            feeding: false,
-            chatting: false
+            // idle: true,
+            // walking: false,
+            // bathing: false,
+            // feeding: false,
+            // chatting: false
+            animState: 'idle',
         };
 
         // set initial position, scaling, and rotation
@@ -48,23 +49,34 @@ class Gorilla extends Group {
         
                 console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
         
+            },
+            // called when loading has errors
+            function ( error ) {
+
+                console.log( 'An error occurred.' );
+                console.log( error );
             }
         );
-
         // parent.addToUpdateList(this);
     }
 
-    update(timeStamp, clock) {
+    update(clock) {
         // delta is time elapsed since previous frame
         // used to calculate the corresponding amount of motion
         const delta = clock.getDelta();
 
         // run this only after loading is complete
         if (this.mixer && this.clips) {
-            if (this.state.idle) {
-                const clip = THREE.AnimationClip.findByName(this.clips, 'IdleAnim');
-                const action = this.mixer.clipAction( clip );
-                action.play();
+            // console.log(this.state.animState);
+            if (!this.idleAction || !this.feedAction) {
+                const idleClip = THREE.AnimationClip.findByName(this.clips, 'IdleAnim');
+                this.idleAction = this.mixer.clipAction(idleClip);
+                const feedClip = THREE.AnimationClip.findByName(this.clips, 'FeedAnim');
+                this.feedAction = this.mixer.clipAction(feedClip);
+            }
+
+            if (this.state.animState == 'idle') {
+                this.idleAction.play();
             }
             this.mixer.update(delta);
         }
@@ -76,10 +88,16 @@ class Gorilla extends Group {
         return Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) / 100;
     }
 
-    doActivity(activity_name){
+    doActivity(activity_name, clock){
 
         if (activity_name == "feed"){
             this.state.hunger = Math.min(this.state.hunger + 1000, 10000);
+            // this.state.feeding = true;
+            // this.state.idle = false;
+            this.mixer.addEventListener( 'loop' , restoreIdle );
+            this.state.animState = 'feed';
+            this.idleAction.stop();
+            this.feedAction.play();
         }
         else if (activity_name == "bathe"){
             this.state.cleanliness = Math.min(this.state.cleanliness + 1000, 10000);
@@ -88,9 +106,20 @@ class Gorilla extends Group {
             this.state.happiness = Math.min(this.state.happiness + 1000, 10000);
         }
 
-        return this.update();
+        return this.update(clock);
+
+        function restoreIdle() {
+            // console.log('detected');
+            // console.log(this);
+            this.removeEventListener( 'loop' , restoreIdle );
+            this._root.state.animState = 'idle';
+            this._root.feedAction.stop();
+            this._root.idleAction.play();
+        }
 
     }
+
+
 
 }
 
