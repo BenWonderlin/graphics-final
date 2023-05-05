@@ -1,5 +1,5 @@
 import { Scene, Color } from 'three';
-import { Gorilla, Bedroom, Bed, Forest, City } from 'objects';
+import { Gorilla, Bedroom, Forest, City } from 'objects';
 import { BasicLights } from 'lights';
 
 class MainScene extends Scene {
@@ -8,24 +8,21 @@ class MainScene extends Scene {
         super();
         this.state = {
             gorilla: new Gorilla(this),
-            updateList: [],
+            bedroom: new Bedroom(),
+            forest: new Forest(),
+            city: new City(),
+            currentLocation: undefined,
+            updateList: []
         };
 
         this.background = new Color(0x000000);
-      
         const lights = new BasicLights();
-        const bedroom = new Bedroom();
-        const forest = new Forest();
-        const bed = new Bed();
-        const city = new City();
+        this.state.currentLocation = this.state.bedroom;
 
-        this.add(this.state.gorilla, lights, city);
+        this.add(this.state.gorilla, lights, this.state.bedroom);
 
     }
 
-    // addToUpdateList(object) {
-    //     this.state.updateList.push(object);
-    // }
 
     update(timeStamp, clock) {
         const { rotationSpeed, updateList } = this.state;
@@ -40,7 +37,27 @@ class MainScene extends Scene {
     }
 
     doActivity(activity_name) {
+
+        if (activity_name == "walk"){
+
+            this.remove(this.state.currentLocation);
+
+            if (this.state.currentLocation.constructor.name == "Bedroom"){
+                this.state.currentLocation = this.state.forest;
+            }
+            else if (this.state.currentLocation.constructor.name == "Forest"){
+                this.state.currentLocation = this.state.city;
+            }
+            else {
+                this.state.currentLocation = this.state.bedroom;
+            }
+
+            this.add(this.state.currentLocation);
+
+        }
+
         return this.state.gorilla.doActivity(activity_name);
+
     }
 
 

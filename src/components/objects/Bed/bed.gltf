@@ -282,7 +282,7 @@
 	"buffers":[
 		{
 			"byteLength":12944,
-			"uri":"/src/components/objects/Bed/bed.bin"
+			"uri":"bed.bin"
 		}
 	]
 }

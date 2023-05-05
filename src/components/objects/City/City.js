@@ -13,7 +13,7 @@ class City extends Group {
         // set initial position, scaling, and rotation
         const SCALE = 1.25;
         this.scale.set(SCALE, SCALE, SCALE);
-        this.position.set(0, 0.87, 0);
+        this.position.set(0, 0.86, 0);
 
         // create mixer to control animation
         this.mixer = new THREE.AnimationMixer( this );
