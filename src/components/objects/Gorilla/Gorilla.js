@@ -101,7 +101,7 @@ class Gorilla extends Group {
         else if (activity_name == "walk"){
             this.state.happiness = Math.min(this.state.happiness + 1000, 10000);
         }
-
+        
         return this.update(clock);
 
         // returns state to 'idle' and adjusts animations accordingly
@@ -112,7 +112,6 @@ class Gorilla extends Group {
             this._root.state.animState = 'idle';
             this._root.actions['idle'].play();
         }
-
     }
 
 

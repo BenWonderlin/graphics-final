@@ -1,0 +1,1 @@
+export { default as Bed } from './Bed.js';
