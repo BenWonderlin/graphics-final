@@ -1,5 +1,5 @@
 import { Scene, Color } from 'three';
-import { Gorilla, Bedroom, Bed } from 'objects';
+import { Gorilla, Bedroom, Bed, Forest } from 'objects';
 import { BasicLights } from 'lights';
 
 class MainScene extends Scene {
@@ -15,9 +15,10 @@ class MainScene extends Scene {
       
         const lights = new BasicLights();
         const bedroom = new Bedroom();
+        const forest = new Forest();
         const bed = new Bed();
 
-        this.add(this.state.gorilla, lights, bedroom, bed);
+        this.add(this.state.gorilla, lights, forest);
 
     }
 
