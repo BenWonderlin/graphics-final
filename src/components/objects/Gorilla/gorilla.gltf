@@ -4725,7 +4725,7 @@
 					}
 				}
 			],
-			"name":"FeedAnim",
+			"name":"feed",
 			"samplers":[
 				{
 					"input":43,
@@ -8764,7 +8764,7 @@
 					}
 				}
 			],
-			"name":"IdleAnim",
+			"name":"idle",
 			"samplers":[
 				{
 					"input":380,
