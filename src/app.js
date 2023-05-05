@@ -104,7 +104,8 @@ window_row.appendChild(canvas);
 
 
 const gorilla_name = document.createElement("div");
-node = document.createTextNode("funky kong");
+gorilla_name.contentEditable = true;
+node = document.createTextNode("click here to name your gorilla");
 
 gorilla_name.style.position = "absolute";
 gorilla_name.style.left = "50%";

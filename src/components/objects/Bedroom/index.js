@@ -1,0 +1,1 @@
+export { default as Bedroom } from './Bedroom.js';
