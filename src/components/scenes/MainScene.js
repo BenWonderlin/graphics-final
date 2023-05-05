@@ -24,19 +24,19 @@ class MainScene extends Scene {
     }
 
 
-    update(timeStamp, clock) {
+    update(clock) {
         const { rotationSpeed, updateList } = this.state;
         // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
         // Call update for each object in the updateList
         for (const obj of updateList) {
-            obj.update(timeStamp, clock);
+            obj.update(clock);
         }
       
-        return this.state.gorilla.update(timeStamp, clock);
+        return this.state.gorilla.update(clock);
     }
 
-    doActivity(activity_name) {
+    doActivity(activity_name, clock) {
 
         if (activity_name == "walk"){
 
@@ -56,10 +56,8 @@ class MainScene extends Scene {
 
         }
 
-        return this.state.gorilla.doActivity(activity_name);
-
+        return this.state.gorilla.doActivity(activity_name, clock);
     }
-
 
 
 }
