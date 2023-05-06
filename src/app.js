@@ -14,12 +14,14 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { RenderPixelatedPass } from 'passes';
 
-
 const WINDOW_PROPORTION = 0.8;
+
+
 // Initialize core ThreeJS components
 const scene = new MainScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
+
 
 // Set up camera
 camera.position.set(0, 0.5, 2);
@@ -27,7 +29,6 @@ camera.lookAt(new Vector3(0, 0, 0));
 
 
 // Set up post-processing
-
 const composer = new EffectComposer( renderer );
 
 const renderPass = new RenderPass(scene, camera); // uncomment these two lines for normal rendering
@@ -37,6 +38,7 @@ const renderPixelatedPass = new RenderPixelatedPass(1, scene, camera, {normalEdg
 composer.addPass(renderPixelatedPass);
 
 composer.render(scene, camera);
+
 
 // Set up clock for animation
 const clock = new Clock();
@@ -101,6 +103,7 @@ info_button.className = "button";
 node = document.createTextNode("Info");
 info_button.append(node);
 
+
 header_row.appendChild(save_button);
 header_row.appendChild(title_card);
 header_row.appendChild(info_button);
@@ -127,7 +130,9 @@ window_row.appendChild(canvas);
 
 const gorilla_name = document.createElement("div");
 gorilla_name.contentEditable = true;
-node = document.createTextNode("click here to name your gorilla");
+const saved_name = localStorage.getItem("gorilla_name");
+node = document.createTextNode(saved_name ? saved_name : "click here to name your gorilla");
+
 
 gorilla_name.style.position = "absolute";
 gorilla_name.style.left = "50%";
@@ -161,7 +166,6 @@ health_bar.style.width = "50%"; // adjusting this updates the health bar
 health_bar.style.borderRadius = "16px";
 health_bar.style.left = "25%";
 health_bar.style.bottom = "13.5%";
-
 
 window_row.appendChild(health_bar);
 
@@ -201,9 +205,58 @@ main_container.appendChild(footer_row);
 
 document.body.append(main_container);
 
+// modals
 
-// more css for the buttons
+const modal_background = document.createElement("div");
+modal_background.style.position = "absolute";
+modal_background.style.width = "150vw";
+modal_background.style.height = "150vh";
+modal_background.style.top = "50%";
+modal_background.style.left = "50%";
+modal_background.style.transform = "translate(-50%, -50%)";
+modal_background.style.backgroundColor = "rgba(0, 0, 0, 0.67)";
+modal_background.style.visibility = "hidden";
+main_container.appendChild(modal_background);
 
+const modal = document.createElement("div");
+modal.style.position = "absolute";
+modal.style.width = "45%";
+modal.style.height = "45%";
+modal.style.top = "50%";
+modal.style.left = "50%";
+modal.style.transform = "translate(-50%, -50%)";
+modal.style.backgroundColor = "rgb(100, 135, 103)"
+modal.style.borderRadius = "8px";
+modal.style.display = "flex";
+modal.style.flexDirection = "column";
+modal.style.alignItems = "center";
+modal.style.justifyContent = "space-around"
+modal.style.border = "6px solid white";
+modal.style.padding = "32px";
+modal.style.color = "rgb(191,192,192)";
+modal.style.textAlign = "center";
+modal.style.visibility = "hidden";
+
+const modal_text = document.createElement("div");
+node = document.createTextNode("Game saved successfully");
+modal_text.style.width = "100%";
+modal_text.append(node);
+modal.appendChild(modal_text);
+
+const modal_button = document.createElement("div");
+modal_button.className = "button";
+modal_button.style.width = "33%";
+modal_button.style.color = "rgb(100, 135, 103)";
+modal_button.style.justifyContent = "center";
+node = document.createTextNode("OK");
+modal_button.append(node);
+modal.appendChild(modal_button);
+
+main_container.appendChild(modal);
+
+//
+
+// style and configure buttons
 const mouseOverButtonHandler = (event) => {
     event.target.style.backgroundColor = "white";
 };
@@ -212,14 +265,33 @@ const mouseOutButtonHandler = (event) => {
     event.target.style.backgroundColor = "rgb(191,192,192)";
 }
 
-const mouseOnClickHandler = (event) => {
-
-    scene.doActivity(event, clock);
+const startActivity = (activity) => {
+    scene.doActivity(activity, clock);
 }
 
-feed_button.addEventListener("click", () => mouseOnClickHandler("feed"));
-bathe_button.addEventListener("click", () => mouseOnClickHandler("bathe"));
-walk_button.addEventListener("click", () => mouseOnClickHandler("walk"));
+
+feed_button.addEventListener("click", () => startActivity("feed"));
+bathe_button.addEventListener("click", () => startActivity("bathe"));
+walk_button.addEventListener("click", () => startActivity("walk"));
+
+const saveGame = () => {
+    localStorage.setItem("gorilla_name", gorilla_name.textContent);
+    localStorage.setItem("gorilla_health", health);
+}
+
+const openModal = () => {
+    modal.style.visibility = "visible";
+    modal_background.style.visibility = "visible";
+}
+
+const closeModal = () => {
+    modal.style.visibility = "hidden";
+    modal_background.style.visibility = "hidden";
+}
+
+save_button.addEventListener("click", () => {saveGame(); openModal();});
+info_button.addEventListener("click", () => openModal());
+modal_button.addEventListener("click", () => closeModal());
 
 
 const buttons = document.getElementsByClassName("button");
@@ -246,6 +318,10 @@ for (let i = 0; i < button_rows.length; i++){
 //
 
 
+// END PAGE STRUCTURE -------------------------------------------------------------------------------------------
+
+
+// set up controls 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
@@ -258,18 +334,6 @@ controls.minPolarAngle = Math.PI / 4;
 controls.update();
 
 
-// const dirt_patch = document.createElement("div");
-// dirt_patch.style.width = "30px";
-// dirt_patch.style.height = "30px";
-// dirt_patch.style.border_radius = "15px";
-// dirt_patch.style.backgroundColor = "brown";
-// dirt_patch.style.transform = "translate(-50%, -50%)";
-// dirt_patch.style.position = "absolute";
-// dirt_patch.style.left = "50%";
-// dirt_patch.style.top = "50%";
-// main_container.appendChild(dirt_patch);
-
-// for render loop
 
 function updateHealthBar(health){
 
@@ -291,37 +355,45 @@ function updateHealthBar(health){
 
 }
 
-function updatebuttons(activity){
-    const buttons = document.getElementsByClassName("button");
-    if (activity){
-        for (let i = 0; i < buttons.length; i++){
-            buttons[i].style.backgroundColor = "gray";
-            buttons[i].style.pointerEvents = "none";
-        }
+function lockButtons(){
+
+    let lock_these = [save_button, info_button, feed_button, bathe_button, walk_button];
+
+    for (let i = 0; i < lock_these.length; i++){
+        lock_these[i].style.backgroundColor = "gray";
+        lock_these[i].style.pointerEvents = "none";
     }
-    else{
-        for (let i = 0; i < buttons.length; i++){
-            if (buttons[i].style.backgroundColor != "white"){
-                buttons[i].style.backgroundColor = "rgb(191,192,192)";
-            }
-            buttons[i].style.pointerEvents = "all";
-        }
-    }
+
 }
 
-// END PAGE STRUCTURE -------------------------------------------------------------------------------------------
+function unlockButtons(){
 
+    let unlock_these = [save_button, info_button, feed_button, bathe_button, walk_button];
+
+    for (let i = 0; i < unlock_these.length; i++){
+        if (unlock_these[i].style.backgroundColor != "white"){
+            unlock_these[i].style.backgroundColor = "rgb(191,192,192)";
+        }
+        buttons[i].style.pointerEvents = "all";
+    }
+
+}
+
+let health;
+let activity;
 // Render loop
 const onAnimationFrameHandler = () => {
     controls.update();
     composer.render(scene, camera);
-    let [health, activity] = scene.update(clock);
+    [health, activity] = scene.update(clock);
+
     updateHealthBar(health);
-    updatebuttons(activity);
+    activity ? lockButtons() : unlockButtons();
 
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
+
 
 // Resize Handler
 const windowResizeHandler = () => {

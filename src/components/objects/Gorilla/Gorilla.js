@@ -9,12 +9,13 @@ class Gorilla extends Group {
         super();
 
         const loader = new GLTFLoader()
+        const health = localStorage.getItem("gorilla_health");
 
         // includes needs and animation states
         this.state = {
-            "hunger" : 6000,
-            "cleanliness" : 6000,
-            "happiness" : 6000,
+            "hunger" : health ?  health * 1000 : 6000,
+            "cleanliness" : health ?  health * 1000 : 6000,
+            "happiness" : health ?  health * 1000 : 6000,
             animState: 'idle',
         };
 
@@ -79,9 +80,9 @@ class Gorilla extends Group {
             this.mixer.update(delta);
         }
 
-        this.state.hunger = Math.max(this.state.hunger - 2, 0);
-        this.state.cleanliness = Math.max(this.state.cleanliness - 2, 0);
-        this.state.happiness = Math.max(this.state.happiness - 2, 0);
+        this.state.hunger = Math.max(this.state.hunger - 1, 0);
+        this.state.cleanliness = Math.max(this.state.cleanliness - 1, 0);
+        this.state.happiness = Math.max(this.state.happiness - 1, 0);
 
         // using harmonic mean to penalize outliers
         return Math.round( 3 / ( (1/this.state.hunger) + (1/this.state.cleanliness) +  (1/this.state.happiness) ) / 1000 );
