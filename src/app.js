@@ -135,6 +135,7 @@ gorilla_name.style.bottom = "15%";
 gorilla_name.style.fontSize = "24px";
 gorilla_name.style.transform = "translate(-50%, -50%)";
 gorilla_name.style.color = "rgb(125,201,94)";
+gorilla_name.style.textOverflow = "ellipsis";
 gorilla_name.append(node);
 
 window_row.appendChild(gorilla_name);
@@ -221,7 +222,6 @@ bathe_button.addEventListener("click", () => mouseOnClickHandler("bathe"));
 walk_button.addEventListener("click", () => mouseOnClickHandler("walk"));
 
 
-
 const buttons = document.getElementsByClassName("button");
 for (let i = 0; i < buttons.length; i++){
     buttons[i].style.backgroundColor = "rgb(191,192,192)";
@@ -246,14 +246,68 @@ for (let i = 0; i < button_rows.length; i++){
 //
 
 
-// comment this block to enable/disable controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 1;
-controls.maxDistance = 2.5;
+controls.minDistance = 1.75;
+controls.maxDistance = 2.25;
+controls.maxAzimuthAngle = Math.PI / 6;
+controls.minAzimuthAngle = - Math.PI / 6;
+controls.maxPolarAngle = Math.PI / 2
+controls.minPolarAngle = Math.PI / 4;
 controls.update();
-//
+
+
+// const dirt_patch = document.createElement("div");
+// dirt_patch.style.width = "30px";
+// dirt_patch.style.height = "30px";
+// dirt_patch.style.border_radius = "15px";
+// dirt_patch.style.backgroundColor = "brown";
+// dirt_patch.style.transform = "translate(-50%, -50%)";
+// dirt_patch.style.position = "absolute";
+// dirt_patch.style.left = "50%";
+// dirt_patch.style.top = "50%";
+// main_container.appendChild(dirt_patch);
+
+// for render loop
+
+function updateHealthBar(health){
+
+    health *= 5;
+    health_bar.style.width = health.toString() + "%";
+
+    if (health <= 10){
+        health_bar.style.backgroundColor = "rgb(139, 0, 0)";
+    }
+    else if (health <= 20){
+        health_bar.style.backgroundColor = "rgb(255,114,118)";
+    }
+    else if (health <= 35){
+        health_bar.style.backgroundColor = "rgb(244, 241, 134)";
+    }
+    else {
+        health_bar.style.backgroundColor = "rgb(124,223,100)";
+    }
+
+}
+
+function updatebuttons(activity){
+    const buttons = document.getElementsByClassName("button");
+    if (activity){
+        for (let i = 0; i < buttons.length; i++){
+            buttons[i].style.backgroundColor = "gray";
+            buttons[i].style.pointerEvents = "none";
+        }
+    }
+    else{
+        for (let i = 0; i < buttons.length; i++){
+            if (buttons[i].style.backgroundColor != "white"){
+                buttons[i].style.backgroundColor = "rgb(191,192,192)";
+            }
+            buttons[i].style.pointerEvents = "all";
+        }
+    }
+}
 
 // END PAGE STRUCTURE -------------------------------------------------------------------------------------------
 
@@ -261,8 +315,10 @@ controls.update();
 const onAnimationFrameHandler = () => {
     controls.update();
     composer.render(scene, camera);
-    let happiness = scene.update(clock) * 0.5;
-    health_bar.style.width = happiness.toString() + "%";
+    let [health, activity] = scene.update(clock);
+    updateHealthBar(health);
+    updatebuttons(activity);
+
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
