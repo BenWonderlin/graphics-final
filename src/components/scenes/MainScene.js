@@ -44,7 +44,7 @@ class MainScene extends Scene {
 
         if (activity_name == "feed"){
             this.state.currentActivity = "feed";
-            setTimeout(() => {this.state.currentActivity = undefined}, 2000);
+            setTimeout(() => {this.state.currentActivity = undefined}, 4000);
         }
         else if (activity_name == "bathe"){
 
@@ -54,7 +54,7 @@ class MainScene extends Scene {
             setTimeout(() => {
                 this.state.currentActivity = undefined;
                 this.remove(this.state.bathtub);
-            }, 2000);
+            }, 4000);
 
         }
         else if (activity_name == "walk"){
@@ -73,7 +73,7 @@ class MainScene extends Scene {
             }
 
             this.add(this.state.currentLocation);
-            setTimeout(() => {this.state.currentActivity = undefined}, 2000);
+            setTimeout(() => {this.state.currentActivity = undefined}, 4000);
 
         }
 

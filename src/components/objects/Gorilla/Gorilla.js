@@ -84,7 +84,7 @@ class Gorilla extends Group {
         this.state.cleanliness = Math.max(this.state.cleanliness - 1, 0);
         this.state.happiness = Math.max(this.state.happiness - 1, 0);
 
-        console.log(this.state);
+        // console.log(this.state);
 
         var need = undefined;
         // this is sloppy, i couldn't find an "argmin" function
