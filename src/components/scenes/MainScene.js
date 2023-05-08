@@ -27,17 +27,12 @@ class MainScene extends Scene {
 
 
     update(clock) {
-        // let health, need;
-        // [health, need] = this.state.gorilla.update(clock);
-        // // console.log(health, need);
-        // return [health, need, this.state.currentActivity];
         return [this.state.gorilla.update(clock), this.state.currentActivity];
     }
 
     doActivity(activity_name, clock) {
         
         if (this.state.currentActivity){
-            // return this.state.gorilla.doActivity(activity_name, clock).concat(this.state.currentActivity);
             return [this.state.gorilla.doActivity(activity_name, clock), this.state.currentActivity];
         }
 

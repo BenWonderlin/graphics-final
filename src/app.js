@@ -445,10 +445,6 @@ const onAnimationFrameHandler = () => {
     composer.render(scene, camera);
     [[health, need], activity] = scene.update(clock);
 
-    // console.log(health);
-    // console.log(need);
-    // console.log(activity);
-
     updateChatBox(need);
     updateHealthBar(health);
     activity ? lockButtons() : unlockButtons();

@@ -84,16 +84,14 @@ class Gorilla extends Group {
         this.state.cleanliness = Math.max(this.state.cleanliness - 1, 0);
         this.state.happiness = Math.max(this.state.happiness - 1, 0);
 
-        // console.log(this.state);
 
+        // determine the lowest need if it is under 50% (used for chat box)
         var need = undefined;
         // this is sloppy, i couldn't find an "argmin" function
         if (Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) < 5000) {
-            // hunger is min
             if (this.state.hunger < this.state.cleanliness && this.state.hunger < this.state.happiness) {
                 need = 'feed';
             }
-            // cleanliness is min
             else if (this.state.cleanliness < this.state.happiness) {
                 need = 'bathe';
             }
