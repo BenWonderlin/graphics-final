@@ -371,9 +371,9 @@ controls.minPolarAngle = Math.PI / 4;
 controls.update();
 
 
-function updateChatBox(need){
+function updateChatBox(need, activity){
 
-    if (need) {
+    if (need && !activity) {
         chat_background.style.visibility = 'visible';
 
         if (need == 'feed') {
@@ -445,7 +445,7 @@ const onAnimationFrameHandler = () => {
     composer.render(scene, camera);
     [[health, need], activity] = scene.update(clock);
 
-    updateChatBox(need);
+    updateChatBox(need, activity);
     updateHealthBar(health);
     activity ? lockButtons() : unlockButtons();
 

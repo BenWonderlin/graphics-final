@@ -84,11 +84,13 @@ class Gorilla extends Group {
         this.state.cleanliness = Math.max(this.state.cleanliness - 1, 0);
         this.state.happiness = Math.max(this.state.happiness - 1, 0);
 
+        // console.log(this.state);
+
 
         // determine the lowest need if it is under 50% (used for chat box)
         var need = undefined;
         // this is sloppy, i couldn't find an "argmin" function
-        if (Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) < 5000) {
+        if (Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) < 9000) {
             if (this.state.hunger < this.state.cleanliness && this.state.hunger < this.state.happiness) {
                 need = 'feed';
             }
@@ -107,17 +109,17 @@ class Gorilla extends Group {
     doActivity(activity_name, clock){
 
         if (activity_name == "feed"){
-            this.state.hunger = Math.min(this.state.hunger + 1000, 10000);
+            this.state.hunger = Math.min(this.state.hunger + 2000, 10000);
             this.mixer.addEventListener( 'loop' , restoreIdle );
             this.state.animState = 'feed';
             this.actions['idle'].stop();
             this.actions['feed'].play();
         }
         else if (activity_name == "bathe"){
-            this.state.cleanliness = Math.min(this.state.cleanliness + 1000, 10000);
+            this.state.cleanliness = Math.min(this.state.cleanliness + 2000, 10000);
         }
         else if (activity_name == "walk"){
-            this.state.happiness = Math.min(this.state.happiness + 1000, 10000);
+            this.state.happiness = Math.min(this.state.happiness + 2000, 10000);
         }
         
         return this.update(clock);
