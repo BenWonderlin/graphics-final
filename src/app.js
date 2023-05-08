@@ -13,6 +13,8 @@ import { Clock } from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { RenderPixelatedPass } from 'passes';
+import { HalftonePass } from 'three/examples/jsm/postprocessing/HalftonePass';
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
 
 const WINDOW_PROPORTION = 0.8;
 
@@ -30,15 +32,14 @@ camera.lookAt(new Vector3(0, 0, 0));
 
 // Set up post-processing
 const composer = new EffectComposer( renderer );
-
 const renderPass = new RenderPass(scene, camera); // uncomment these two lines for normal rendering
 composer.addPass(renderPass);
-
-const renderPixelatedPass = new RenderPixelatedPass(1, scene, camera, {normalEdgeStrength : 0.00001, depthEdgeStrength : 0.00001}); // uncomment these two lines for pixelated rendering
-composer.addPass(renderPixelatedPass);
-
 composer.render(scene, camera);
 
+// extra passes
+const halftonePass = new HalftonePass(window.width, window.height, {radius : 1, blending: 0.25});
+const renderPixelatedPass = new RenderPixelatedPass(1, scene, camera, {normalEdgeStrength : 0.00001, depthEdgeStrength : 0.00001});
+const filmPass = new FilmPass(0.2, 0.2, 540, true);
 
 // Set up clock for animation
 const clock = new Clock();
@@ -82,10 +83,10 @@ header_row.style.width = "100%";
 header_row.style.verticalAlign = "center";
 header_row.style.margin = "8px 0px 8px 0px"
 
-const save_button = document.createElement("span");
-save_button.className = "button";
-var node = document.createTextNode("Save");
-save_button.append(node);
+const gfx_button = document.createElement("span");
+gfx_button.className = "button";
+var node = document.createTextNode("GFX");
+gfx_button.append(node);
 
 const title_card = document.createElement("span");
 title_card.style.fontSize = "54px";
@@ -104,7 +105,7 @@ node = document.createTextNode("Info");
 info_button.append(node);
 
 
-header_row.appendChild(save_button);
+header_row.appendChild(gfx_button);
 header_row.appendChild(title_card);
 header_row.appendChild(info_button);
 
@@ -114,7 +115,7 @@ main_container.appendChild(header_row);
 
 // window row
 const window_row = document.createElement("div");
-window_row.style.maxHeight = "69vh";
+window_row.style.maxHeight = "68vh";
 window_row.style.margin = "0px 0px 24px 0px";
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -238,7 +239,7 @@ modal.style.textAlign = "center";
 modal.style.visibility = "hidden";
 
 const modal_text = document.createElement("div");
-node = document.createTextNode("Game saved successfully");
+node = document.createTextNode("Game instructions here");
 modal_text.style.width = "100%";
 modal_text.append(node);
 modal.appendChild(modal_text);
@@ -267,6 +268,8 @@ const mouseOutButtonHandler = (event) => {
 
 const startActivity = (activity) => {
     scene.doActivity(activity, clock);
+    localStorage.setItem("gorilla_name", gorilla_name.textContent);
+    localStorage.setItem("gorilla_health", health);
 }
 
 
@@ -274,9 +277,26 @@ feed_button.addEventListener("click", () => startActivity("feed"));
 bathe_button.addEventListener("click", () => startActivity("bathe"));
 walk_button.addEventListener("click", () => startActivity("walk"));
 
-const saveGame = () => {
-    localStorage.setItem("gorilla_name", gorilla_name.textContent);
-    localStorage.setItem("gorilla_health", health);
+var curr_gfx = undefined;
+const switchGFX = () => {
+    if (curr_gfx == undefined){
+        composer.addPass(renderPixelatedPass);
+        curr_gfx = renderPixelatedPass;
+    }
+    else if (curr_gfx == renderPixelatedPass){
+        composer.passes.splice(1, 1)
+        composer.addPass(halftonePass);
+        curr_gfx = halftonePass;
+    }
+    else if (curr_gfx == halftonePass){
+        composer.passes.splice(1, 1);
+        composer.addPass(filmPass);
+        curr_gfx = filmPass;
+    }
+    else {
+        composer.passes.splice(1, 1);
+        curr_gfx = undefined;
+    }
 }
 
 const openModal = () => {
@@ -289,7 +309,7 @@ const closeModal = () => {
     modal_background.style.visibility = "hidden";
 }
 
-save_button.addEventListener("click", () => {saveGame(); openModal();});
+gfx_button.addEventListener("click", () => { switchGFX();});
 info_button.addEventListener("click", () => openModal());
 modal_button.addEventListener("click", () => closeModal());
 
@@ -357,7 +377,7 @@ function updateHealthBar(health){
 
 function lockButtons(){
 
-    let lock_these = [save_button, info_button, feed_button, bathe_button, walk_button];
+    let lock_these = [gfx_button, info_button, feed_button, bathe_button, walk_button];
 
     for (let i = 0; i < lock_these.length; i++){
         lock_these[i].style.backgroundColor = "gray";
@@ -368,7 +388,7 @@ function lockButtons(){
 
 function unlockButtons(){
 
-    let unlock_these = [save_button, info_button, feed_button, bathe_button, walk_button];
+    let unlock_these = [gfx_button, info_button, feed_button, bathe_button, walk_button];
 
     for (let i = 0; i < unlock_these.length; i++){
         if (unlock_these[i].style.backgroundColor != "white"){
