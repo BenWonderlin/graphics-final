@@ -170,6 +170,27 @@ health_bar.style.bottom = "13.5%";
 
 window_row.appendChild(health_bar);
 
+
+const chat_background = document.createElement("span");
+chat_background.style.position = "absolute";
+chat_background.style.backgroundColor = "rgb(192,192,192)";
+chat_background.style.height = "10%";
+chat_background.style.width = "10%";
+chat_background.style.borderRadius = "16px";
+chat_background.style.left = "65%";
+chat_background.style.bottom = "70%";
+chat_background.style.textAlign = "center";
+chat_background.style.borderStyle = "solid";
+chat_background.style.borderColor = "rgb(100,100,100)";
+chat_background.style.borderWidth = "8px";
+chat_background.style.fontSize = "xxx-large";
+
+node = document.createTextNode("🍌");
+chat_background.append(node);
+
+
+window_row.appendChild(chat_background);
+
 main_container.appendChild(window_row);
 //
 
