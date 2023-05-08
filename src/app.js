@@ -177,17 +177,13 @@ chat_background.style.backgroundColor = "rgb(192,192,192)";
 chat_background.style.height = "10%";
 chat_background.style.width = "10%";
 chat_background.style.borderRadius = "16px";
-chat_background.style.left = "65%";
+chat_background.style.left = "70%";
 chat_background.style.bottom = "70%";
 chat_background.style.textAlign = "center";
 chat_background.style.borderStyle = "solid";
 chat_background.style.borderColor = "rgb(100,100,100)";
 chat_background.style.borderWidth = "8px";
 chat_background.style.fontSize = "xxx-large";
-
-node = document.createTextNode("🍌");
-chat_background.append(node);
-
 
 window_row.appendChild(chat_background);
 
@@ -375,6 +371,26 @@ controls.minPolarAngle = Math.PI / 4;
 controls.update();
 
 
+function updateChatBox(need){
+
+    if (need) {
+        chat_background.style.visibility = 'visible';
+
+        if (need == 'feed') {
+            chat_background.textContent = "🍌";
+        }
+        else if (need == 'bathe') {
+            chat_background.textContent = "🛁";
+        }
+        else if (need == 'walk') {
+            chat_background.textContent = "👣";
+        }
+    }
+    else {
+        chat_background.style.visibility = 'hidden';
+    }
+}
+
 
 function updateHealthBar(health){
 
@@ -421,13 +437,19 @@ function unlockButtons(){
 }
 
 let health;
+let need;
 let activity;
 // Render loop
 const onAnimationFrameHandler = () => {
     controls.update();
     composer.render(scene, camera);
-    [health, activity] = scene.update(clock);
+    [[health, need], activity] = scene.update(clock);
 
+    // console.log(health);
+    // console.log(need);
+    // console.log(activity);
+
+    updateChatBox(need);
     updateHealthBar(health);
     activity ? lockButtons() : unlockButtons();
 

@@ -84,8 +84,26 @@ class Gorilla extends Group {
         this.state.cleanliness = Math.max(this.state.cleanliness - 1, 0);
         this.state.happiness = Math.max(this.state.happiness - 1, 0);
 
+        console.log(this.state);
+
+        var need = undefined;
+        // this is sloppy, i couldn't find an "argmin" function
+        if (Math.min(this.state.hunger, this.state.cleanliness, this.state.happiness) < 5000) {
+            // hunger is min
+            if (this.state.hunger < this.state.cleanliness && this.state.hunger < this.state.happiness) {
+                need = 'feed';
+            }
+            // cleanliness is min
+            else if (this.state.cleanliness < this.state.happiness) {
+                need = 'bathe';
+            }
+            else {
+                need = 'walk';
+            }
+        }
+
         // using harmonic mean to penalize outliers
-        return Math.round( 3 / ( (1/this.state.hunger) + (1/this.state.cleanliness) +  (1/this.state.happiness) ) / 1000 );
+        return [Math.round( 3 / ( (1/this.state.hunger) + (1/this.state.cleanliness) +  (1/this.state.happiness) ) / 1000 ), need];
     }
 
     doActivity(activity_name, clock){
