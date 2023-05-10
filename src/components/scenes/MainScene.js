@@ -13,6 +13,7 @@ class MainScene extends Scene {
             forest: new Forest(),
             city: new City(),
             currentLocation: undefined,
+            currentLocationCode: undefined, // webpack >_<
             currentActivity: undefined,
             bathtub: new Bathtub(),
             banana: new Banana()
@@ -21,6 +22,7 @@ class MainScene extends Scene {
         this.background = new Color(0x000000);
         const lights = new BasicLights();
         this.state.currentLocation = this.state.bedroom;
+        this.state.currentLocationCode = 0;
 
         this.add(this.state.gorilla, lights, this.state.bedroom, this.state.banana);
 
@@ -62,14 +64,17 @@ class MainScene extends Scene {
             this.state.gorilla.walk();
 
             let nextLocation;
-            if (this.state.currentLocation.constructor.name == "Bedroom"){
+            if (this.state.currentLocationCode == 0){
                 nextLocation = this.state.forest;
+                this.state.currentLocationCode = 1;
             }
-            else if (this.state.currentLocation.constructor.name == "Forest"){
+            else if (this.state.currentLocationCode == 1){
                 nextLocation = this.state.city;
+                this.state.currentLocationCode = 2;
             }
             else {
                 nextLocation = this.state.bedroom;
+                this.state.currentLocationCode = 0;
             }
 
             setTimeout(() => {
@@ -77,7 +82,7 @@ class MainScene extends Scene {
                 this.state.currentLocation = nextLocation;
                 this.add(this.state.currentLocation);
             }, 3200);
-            
+ 
             setTimeout(() => {this.state.currentActivity = undefined;}, 8000);
 
         }

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import MODEL from './bedroom.gltf';
+import MODEL from './bedroom.glb';
 
 class Bedroom extends Group {
     constructor() {

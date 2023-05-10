@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
-import MODEL from './gorilla.gltf';
+import MODEL from './gorilla.glb';
 
 class Gorilla extends Group {
     constructor(parent) {
