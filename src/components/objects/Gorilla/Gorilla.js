@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import MODEL from './gorilla.gltf';
 
 class Gorilla extends Group {
@@ -55,6 +56,47 @@ class Gorilla extends Group {
         );
     }
 
+    walk() {
+        // Use timing library for more precice "bounce" animation
+        // TweenJS guide: http://learningthreejs.com/blog/2011/08/17/tweenjs-for-smooth-animation/
+        // Possible easings: http://sole.github.io/tween.js/examples/03_graphs.html
+        const turnOff = new TWEEN.Tween(this.rotation)
+            .to({ y: this.rotation.y + Math.PI / 2 }, 800)
+            .easing(TWEEN.Easing.Linear.None);
+        const moveBack = new TWEEN.Tween(this.position)
+            .to({ x: this.position.x - 0.5}, 800)
+            .easing(TWEEN.Easing.Linear.None);
+        const walkOff = new TWEEN.Tween(this.position)
+            .to({ x: this.position.x + 2}, 2200)
+            .easing(TWEEN.Easing.Quadratic.In);
+        const walkOn = new TWEEN.Tween(this.position)
+            .to({ x: this.position.x - 0.5}, 2200)
+            .easing(TWEEN.Easing.Quadratic.Out);
+        const turnOn = new TWEEN.Tween(this.rotation)
+            .to({ y: this.rotation.y}, 800)
+            .easing(TWEEN.Easing.Linear.None);
+        const moveForward = new TWEEN.Tween(this.position)
+            .to({ x: this.position.x}, 800)
+            .easing(TWEEN.Easing.Linear.None);
+
+        // turn to gorilla's left, run off scene, reappear on other side, run back to center
+        turnOff.onComplete(() => {
+            setTimeout(() => walkOff.start(), 500)
+        });
+        walkOff.onComplete(() => {
+            this.position.x = -2;
+            walkOn.start();
+        });
+        walkOn.onComplete(() => {
+            turnOn.start()
+            moveForward.start()
+        });
+
+        // Start animation
+        turnOff.start();
+        moveBack.start();
+    }
+
     update(clock) {
         // delta is time elapsed since previous frame
         // used to calculate the corresponding amount of motion
@@ -71,7 +113,11 @@ class Gorilla extends Group {
                     const clip = this.clips[i];
                     const action = this.mixer.clipAction(clip);
                     this.actions[clip.name] = action;
+                    
                 }   
+                
+                // increase walk speed
+                this.actions['walk'].setEffectiveTimeScale(1.5);
             }
 
             if (this.state.animState == 'idle') {
@@ -102,6 +148,8 @@ class Gorilla extends Group {
             }
         }
 
+        TWEEN.update();
+
         // using harmonic mean to penalize outliers
         return [Math.round( 3 / ( (1/this.state.hunger) + (1/this.state.cleanliness) +  (1/this.state.happiness) ) / 1000 ), need];
     }
@@ -110,20 +158,15 @@ class Gorilla extends Group {
 
         if (activity_name == "feed"){
             this.state.hunger = Math.min(this.state.hunger + 2000, 10000);
-            this.mixer.addEventListener( 'loop' , restoreIdle );
-            this.state.animState = 'feed';
-            this.actions['idle'].stop();
-            this.actions['feed'].play();
+            playAnimation(this, 'feed');
         }
         else if (activity_name == "bathe"){
             this.state.cleanliness = Math.min(this.state.cleanliness + 2000, 10000);
-            this.mixer.addEventListener( 'loop' , restoreIdle );
-            this.state.animState = 'bathe';
-            this.actions['idle'].stop();
-            this.actions['bathe'].play();
+            playAnimation(this, 'bathe');
         }
         else if (activity_name == "walk"){
             this.state.happiness = Math.min(this.state.happiness + 2000, 10000);
+            playAnimation(this, 'walk');
         }
         
         return this.update(clock);
@@ -135,6 +178,14 @@ class Gorilla extends Group {
             this._root.actions[this._root.state.animState].stop();
             this._root.state.animState = 'idle';
             this._root.actions['idle'].play();
+        }
+
+        // plays the selected animation
+        function playAnimation(model, name) {
+            model.mixer.addEventListener( 'loop' , restoreIdle );
+            model.state.animState = name;
+            model.actions['idle'].stop();
+            model.actions[name].play();
         }
     }
 
