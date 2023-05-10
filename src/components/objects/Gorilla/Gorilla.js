@@ -157,15 +157,15 @@ class Gorilla extends Group {
     doActivity(activity_name, clock){
 
         if (activity_name == "feed"){
-            this.state.hunger = Math.min(this.state.hunger + 2000, 10000);
+            this.state.hunger = Math.min(this.state.hunger + 2500, 10000);
             playAnimation(this, 'feed');
         }
         else if (activity_name == "bathe"){
-            this.state.cleanliness = Math.min(this.state.cleanliness + 2000, 10000);
+            this.state.cleanliness = Math.min(this.state.cleanliness + 2500, 10000);
             playAnimation(this, 'bathe');
         }
         else if (activity_name == "walk"){
-            this.state.happiness = Math.min(this.state.happiness + 2000, 10000);
+            this.state.happiness = Math.min(this.state.happiness + 2500, 10000);
             playAnimation(this, 'walk');
         }
         

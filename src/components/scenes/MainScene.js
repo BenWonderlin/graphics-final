@@ -42,7 +42,7 @@ class MainScene extends Scene {
         if (activity_name == "feed"){
             this.state.currentActivity = "feed";
             this.state.banana.fall();
-            setTimeout(() => {this.state.currentActivity = undefined}, 6000);
+            setTimeout(() => {this.state.currentActivity = undefined}, 8000);
         }
         else if (activity_name == "bathe"){
 
@@ -78,7 +78,7 @@ class MainScene extends Scene {
                 this.add(this.state.currentLocation);
             }, 3000);
             
-            setTimeout(() => {this.state.currentActivity = undefined;}, 6000);
+            setTimeout(() => {this.state.currentActivity = undefined;}, 8000);
 
         }
 
