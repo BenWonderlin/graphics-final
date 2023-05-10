@@ -1,17 +1,15 @@
 {
   "name": "gorilla-tamagotchi",
   "repository": "graphics-final",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "title": "Gorilla Tamagotchi",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "description": "a web-based pet simulation game featuring an animated gorilla",
   "keywords": [
     "graphics",
     "three.js",
     "CPSC 478",
-    "keyword1",
-    "keyword2",
-    "...",
-    "this last entry CANNOT have a comma after it ->"
+    "Gorilla",
+    "Tamagotchi"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development --output-public-path \"\"",
