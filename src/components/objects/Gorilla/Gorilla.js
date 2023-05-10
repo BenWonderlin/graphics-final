@@ -70,10 +70,13 @@ class Gorilla extends Group {
             .to({ x: this.position.x + 2}, 2200)
             .easing(TWEEN.Easing.Quadratic.In);
         const walkOn = new TWEEN.Tween(this.position)
-            .to({ x: this.position.x}, 2200)
+            .to({ x: this.position.x - 0.5}, 2200)
             .easing(TWEEN.Easing.Quadratic.Out);
         const turnOn = new TWEEN.Tween(this.rotation)
             .to({ y: this.rotation.y}, 800)
+            .easing(TWEEN.Easing.Linear.None);
+        const moveForward = new TWEEN.Tween(this.position)
+            .to({ x: this.position.x}, 800)
             .easing(TWEEN.Easing.Linear.None);
 
         // turn to gorilla's left, run off scene, reappear on other side, run back to center
@@ -86,7 +89,7 @@ class Gorilla extends Group {
         });
         walkOn.onComplete(() => {
             turnOn.start()
-            // moveForward.start()
+            moveForward.start()
         });
 
         // Start animation
