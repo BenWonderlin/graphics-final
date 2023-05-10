@@ -49,7 +49,7 @@ class MainScene extends Scene {
             setTimeout(() => {
                 this.state.currentActivity = undefined;
                 this.remove(this.state.bathtub);
-            }, 6000);
+            }, 8000);
 
         }
         else if (activity_name == "walk"){

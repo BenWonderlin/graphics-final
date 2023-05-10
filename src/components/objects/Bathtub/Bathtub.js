@@ -12,8 +12,8 @@ class Bathtub extends Group {
 
         // set initial position, scaling, and rotation
         const SCALE = 0.15;
-        this.scale.set(SCALE, SCALE, SCALE);
-        this.position.set(0, -0.25, 0.4);
+        this.scale.set(SCALE, SCALE*1.2, SCALE);
+        this.position.set(0, -0.20, 0.4);
         this.rotation.y += 3 *Math.PI / 2;
 
         loader.load(

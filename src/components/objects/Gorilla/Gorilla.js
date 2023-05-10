@@ -117,6 +117,10 @@ class Gorilla extends Group {
         }
         else if (activity_name == "bathe"){
             this.state.cleanliness = Math.min(this.state.cleanliness + 2000, 10000);
+            this.mixer.addEventListener( 'loop' , restoreIdle );
+            this.state.animState = 'bathe';
+            this.actions['idle'].stop();
+            this.actions['bathe'].play();
         }
         else if (activity_name == "walk"){
             this.state.happiness = Math.min(this.state.happiness + 2000, 10000);
