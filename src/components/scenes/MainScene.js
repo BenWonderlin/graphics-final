@@ -76,7 +76,7 @@ class MainScene extends Scene {
                 this.remove(this.state.currentLocation);
                 this.state.currentLocation = nextLocation;
                 this.add(this.state.currentLocation);
-            }, 3000);
+            }, 3200);
             
             setTimeout(() => {this.state.currentActivity = undefined;}, 8000);
 
