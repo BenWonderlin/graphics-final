@@ -1,5 +1,5 @@
 import { Scene, Color } from 'three';
-import { Gorilla, Bedroom, Forest, City, Bathtub } from 'objects';
+import { Gorilla, Bedroom, Forest, City, Bathtub, Banana } from 'objects';
 import { BasicLights } from 'lights';
 
 
@@ -14,19 +14,21 @@ class MainScene extends Scene {
             city: new City(),
             currentLocation: undefined,
             currentActivity: undefined,
-            bathtub: new Bathtub()
+            bathtub: new Bathtub(),
+            banana: new Banana()
         };
 
         this.background = new Color(0x000000);
         const lights = new BasicLights();
         this.state.currentLocation = this.state.bedroom;
 
-        this.add(this.state.gorilla, lights, this.state.bedroom);
+        this.add(this.state.gorilla, lights, this.state.bedroom, this.state.banana);
 
     }
 
 
     update(clock) {
+        this.state.banana.update();
         return [this.state.gorilla.update(clock), this.state.currentActivity];
     }
 
@@ -39,6 +41,7 @@ class MainScene extends Scene {
 
         if (activity_name == "feed"){
             this.state.currentActivity = "feed";
+            this.state.banana.fall();
             setTimeout(() => {this.state.currentActivity = undefined}, 6000);
         }
         else if (activity_name == "bathe"){

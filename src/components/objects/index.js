@@ -5,3 +5,4 @@ export * from './Bedroom';
 export * from './Forest';
 export * from './City';
 export * from './Bathtub';
+export * from './Banana';
