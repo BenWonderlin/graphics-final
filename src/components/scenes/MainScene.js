@@ -54,21 +54,28 @@ class MainScene extends Scene {
         }
         else if (activity_name == "walk"){
 
-            this.remove(this.state.currentLocation);
             this.state.currentActivity = "walk";
 
+            this.state.gorilla.walk();
+
+            let nextLocation;
             if (this.state.currentLocation.constructor.name == "Bedroom"){
-                this.state.currentLocation = this.state.forest;
+                nextLocation = this.state.forest;
             }
             else if (this.state.currentLocation.constructor.name == "Forest"){
-                this.state.currentLocation = this.state.city;
+                nextLocation = this.state.city;
             }
             else {
-                this.state.currentLocation = this.state.bedroom;
+                nextLocation = this.state.bedroom;
             }
 
-            this.add(this.state.currentLocation);
-            setTimeout(() => {this.state.currentActivity = undefined}, 6000);
+            setTimeout(() => {
+                this.remove(this.state.currentLocation);
+                this.state.currentLocation = nextLocation;
+                this.add(this.state.currentLocation);
+            }, 3000);
+            
+            setTimeout(() => {this.state.currentActivity = undefined;}, 6000);
 
         }
 
