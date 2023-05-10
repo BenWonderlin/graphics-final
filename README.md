@@ -1,4 +1,4 @@
-[#Written Report](https://docs.google.com/document/d/1tyLU6klFl3k5pvFn_J-cNTqpchOBZMDPFX3Wu846wrc/edit?usp=sharing)
+#[Written Report](https://docs.google.com/document/d/1tyLU6klFl3k5pvFn_J-cNTqpchOBZMDPFX3Wu846wrc/edit?usp=sharing)
 
 ## CPSC 478/578 Final Project Starter
 
