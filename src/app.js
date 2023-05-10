@@ -223,14 +223,13 @@ main_container.appendChild(footer_row);
 
 document.body.append(main_container);
 
-// modals
-
+// modal
 const modal_background = document.createElement("div");
 modal_background.style.position = "absolute";
 modal_background.style.width = "150vw";
 modal_background.style.height = "150vh";
-modal_background.style.top = "50%";
-modal_background.style.left = "50%";
+modal_background.style.top = "55%";
+modal_background.style.left = "55%";
 modal_background.style.transform = "translate(-50%, -50%)";
 modal_background.style.backgroundColor = "rgba(0, 0, 0, 0.67)";
 modal_background.style.visibility = "hidden";
@@ -238,8 +237,8 @@ main_container.appendChild(modal_background);
 
 const modal = document.createElement("div");
 modal.style.position = "absolute";
-modal.style.width = "45%";
-modal.style.height = "45%";
+modal.style.width = "50%";
+modal.style.height = "50%";
 modal.style.top = "50%";
 modal.style.left = "50%";
 modal.style.transform = "translate(-50%, -50%)";
@@ -255,15 +254,33 @@ modal.style.color = "rgb(191,192,192)";
 modal.style.textAlign = "center";
 modal.style.visibility = "hidden";
 
+const GAME_INSTRUCTIONS = "To play, name your gorilla by clicking on the text in the middle of the screen. Then, take care of your gorilla by completing activities. Make sure your gorilla's health doesn't fall too low!";
+
+const modal_header = document.createElement("div");
+node = document.createTextNode("Welcome to Gorilla Tamagotchi!");
+modal_header.style.width = "100%";
+modal_header.style.fontSize = "26px";
+modal_header.style.color = "white";
+modal_header.append(node);
+modal.appendChild(modal_header);
+
 const modal_text = document.createElement("div");
-node = document.createTextNode("Game instructions here");
+node = document.createTextNode(GAME_INSTRUCTIONS);
 modal_text.style.width = "100%";
+modal_text.style.fontSize = "22px";
 modal_text.append(node);
 modal.appendChild(modal_text);
 
+const modal_footer = document.createElement("div");
+node = document.createTextNode("You can browse visual effects by pressing the GFX button. Also, you can adjust your view by clicking on the scene. Have fun!");
+modal_footer.style.width = "100%";
+modal_footer.style.fontSize = "22px";
+modal_footer.append(node);
+modal.appendChild(modal_footer);
+
 const modal_button = document.createElement("div");
 modal_button.className = "button";
-modal_button.style.width = "33%";
+modal_button.style.width = "20%";
 modal_button.style.color = "rgb(100, 135, 103)";
 modal_button.style.justifyContent = "center";
 node = document.createTextNode("OK");
@@ -271,7 +288,6 @@ modal_button.append(node);
 modal.appendChild(modal_button);
 
 main_container.appendChild(modal);
-
 //
 
 // style and configure buttons
