@@ -1,4 +1,6 @@
-# CPSC 478/578 Final Project Starter
+[#Written Report](https://docs.google.com/document/d/1tyLU6klFl3k5pvFn_J-cNTqpchOBZMDPFX3Wu846wrc/edit?usp=sharing)
+
+## CPSC 478/578 Final Project Starter
 
 This skeleton project will help you get started on your ThreeJS project and provide a strong foundation for extension. It sets up a simple scene, camera, and renderer in a modern JavaScript environment, and is written using some common best-practices that you may want to draw from.
 
